@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://use.fontawesome.com/478e097f2b.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300|Oswald" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <style>
+        body {
+            background-color: #1f2029;
+            color: #eceff1;
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+        }
+        
+        h1 {
+            font: 72px 'Oswald', Arial, sans-serif;
+            margin: 50px 0;
+            text-align: center;
+        }
+        
+        .container {
+            margin: 0 auto;
+            width: 95%;
+        }
+        
+        @media (min-width: 600px) {
+            .container {
+                width: 75%;
+            }
+        }
+        
+        @media (min-width: 900px) {
+            .container {
+                width: 65%;
+            }
+        }
+        
+        input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #eceff1;
+            font-size: 24px;
+            height: 50px;
+            padding-bottom: 15px;
+        }
+        
+        input:focus {
+            outline: 0;
+        }
+        
+        @media (min-width: 900px) {
+            input {
+                font-size: 32px;
+            }
+        }
+        
+        .input-buttons {
+            height: 50px;
+            border-bottom: 1px solid #eceff1;
+            padding: 0;
+        }
+        
+        .input-buttons i {
+            padding: 0 12px;
+            color: #eceff1;
+            float: right;
+        }
+        
+        .input-buttons .fa-plus {
+            border-right: 1px solid #eceff1;
+        }
+        
+        @media (min-width: 600px) {
+            .input-buttons .fa-trash-o:hover {
+                color: #8167a9;
+            }
+            .input-buttons .fa-plus:hover {
+                color: #8167a9;
+            }
+        }
+        
+        .error {
+            color: #8167a9;
+            display: none;
+            font-size: 16px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .error .fa-times {
+            color: #eceff1;
+            padding: 5px 15px;
+            float: right;
+        }
+        
+        .error .fa-times:hover {
+            color: #fafafa;
+        }
+        
+        .error p {
+            margin: 20px 0;
+        }
+        
+        @media (min-width: 600px) {
+            .error p {
+                font-size: 20px;
+            }
+        }
+        
+        .todo-list {
+            padding: 0;
+            margin: 20px 0 50px;
+        }
+        
+        .todo-list .todo {
+            background: #eceff1;
+            border-bottom: 1px dotted #455a64;
+            color: #455a64;
+            font-size: 20px;
+            list-style: none;
+            padding: 20px 130px 20px 15px;
+            position: relative;
+            white-space: normal;
+        }
+        
+        span {
+            position: absolute;
+            top: 15px;
+            right: 0;
+        }
+        
+        span a {
+            color: #455a64;
+        }
+        
+        span i {
+            padding: 10px 15px;
+        }
+        
+        span .fa-check {
+            border-right: 1px solid #455a64;
+        }
+        
+        span .fa-check:hover {
+            color: #8167a9;
+        }
+        
+        span .fa-trash-o:hover {
+            color: #8167a9;
+        }
+        
+        .complete {
+            color: #8167a9;
+            text-decoration: line-through;
+        }
+        
+        .complete .check {
+            color: #8167a9;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>To-Do List</h1>
+    <div class="container">
+        <div class="row">
+            <input type="text" class="col-xs-8 col-sm-9">
+            <div class="input-buttons col-xs-4 col-sm-3">
+                <a href="#" class="clear-text"><i class="fa fa-trash-o fa-2x"></i></a>
+                <a href="#" class="add-todo"><i class="fa fa-plus fa-2x"></i></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="error">
+                <a href="#"><i class="fa fa-times"></i></a>
+                <p>We both know you should be doing something right now. Please enter a task.</p>
+            </div>
+            <!-- Start to-do list -->
+            <ul class="todo-list col-xs-12">
+            </ul>
+        </div>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src="./script.js"></script>
+    <script>
+        $(function() {
+
+            // Input gains focus on document ready
+            //$('input').focus();
+
+            // Define function to add tasks to list
+            function addTodo() {
+                if ($('input').val().trim() == "") {
+                    // Show error message
+                    $('.error').fadeIn(200);
+                } else {
+                    // Hide error message
+                    $('.error').hide();
+
+                    // Get input value
+                    var $todo = $('input').val();
+
+                    // Create new list item
+                    var $newListItem = $('<li class="todo">' + $todo + '<span>' +
+                        '<a href="#" class="check">' + '<i class="fa fa-check fa-lg"></i>' + '</a>' +
+                        '<a href="#" class="delete-todo">' + '<i class="fa fa-trash-o fa-lg"></i>' + '</a>' +
+                        '</span>' + '</li>');
+
+                    // Add list item to end of list
+                    var $addListItem = $('ul').append($newListItem);
+
+                    // Hide list item before fading it into view
+                    $newListItem.hide().fadeIn(500);
+
+                    // Refocus input box for next task
+                    $('input').val("").focus();
+                }
+            };
+
+            // Clear error message when 'x' icon is clicked
+            $('i.fa-times').on('click', function() {
+                $('.error').hide();
+            });
+
+            // Call addTodo function on click
+            $('.add-todo').on('click', addTodo);
+
+            // Call addTodo function when enter key is pressed
+            $(document).on('keypress', function(e) {
+                if (e.which == 13) {
+                    addTodo();
+                }
+            });
+
+            // Clear typed text and refocus input box
+            $('.clear-text').on('click', function(e) {
+                e.preventDefault();
+                $('input').val("").focus();
+            });
+
+            // Mark list item complete
+            $(document).on('click', '.check', function(e) {
+                e.preventDefault();
+                $(this).closest('li').toggleClass('complete');
+            });
+
+            // Fade list item and delete from DOM
+            $(document).on('click', '.delete-todo', function(e) {
+                e.preventDefault();
+                $(this).closest('li').fadeOut(500, function() {
+                    $(this).remove();
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>
